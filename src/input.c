@@ -6,12 +6,6 @@
 
 #define NUMBER_INPUT_CAPACITY 128
 
-static void discard_line(FILE *input)
-{
-    int character;
-    while ((character = fgetc(input)) != '\n' && character != EOF) {}
-}
-
 static void trim_whitespace(char *text)
 {
     size_t start = 0;
@@ -66,6 +60,14 @@ bool input_read_text(FILE *input, FILE *output, const char *prompt,
             fprintf(output, "Input cannot be empty. Please try again.\n");
             continue;
         }
+        /* Reject embedded control characters that could disrupt the report columns. */
+        for (size_t index = 0; text[index] != '\0'; index++) {
+            if (iscntrl((unsigned char)text[index])) invalid_character = true;
+        }
+        if (invalid_character) {
+            fprintf(output, "Input contains an invalid character. Please try again.\n");
+            continue;
+        }
         return true;
     }
 }
@@ -98,20 +100,7 @@ bool input_read_integer(FILE *input, FILE *output, const char *prompt,
         char *end;
         long number;
 
-        fprintf(output, "%s", prompt);
-        fflush(output);
-        if (fgets(line, sizeof(line), input) == NULL) return false;
-        if (strchr(line, '\n') == NULL && !feof(input)) {
-            /* Reject a full buffer even when the valid-looking prefix is a number. */
-            discard_line(input);
-            fprintf(output, "Input is too long. Please enter a shorter number.\n");
-            continue;
-        }
-        trim_whitespace(line);
-        if (line[0] == '\0') {
-            fprintf(output, "Input cannot be empty. Please enter a whole number.\n");
-            continue;
-        }
+        if (!input_read_text(input, output, prompt, line, sizeof(line))) return false;
 
         errno = 0;
         number = strtol(line, &end, 10);

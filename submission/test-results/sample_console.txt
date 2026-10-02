@@ -1,0 +1,21 @@
+Welcome to the Student Grade Calculator!
+Please enter your name (maximum 127 bytes): Hello, John Deere!
+How many subjects do you want to calculate grades for (1-1000)? 
+Enter subject 1 name: Enter your score for C Programming (0-100): 
+Enter subject 2 name: Enter your score for Python (0-100): 
+Enter subject 3 name: Enter your score for Computer Architecture (0-100): 
+------------------------------------
+Student: John Deere
+Subjects: 3
+------------------------------------
+Subject                 Score  Grade
+------------------------------------
+C Programming             85%      4
+Python                    92%      5
+Computer Architecture     68%      2
+
+Average Grade: 3.67
+Average Score: 81.67%
+Overall Grade: 4
+------------------------------------
+Report saved to student_report.txt

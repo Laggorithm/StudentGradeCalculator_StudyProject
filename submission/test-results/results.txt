@@ -1,0 +1,47 @@
+PASS: Assignment example and identical saved report
+PASS: numeric columns and table separators align
+PASS: Grade boundary 0 -> 0
+PASS: Grade boundary 49 -> 0
+PASS: Grade boundary 50 -> 1
+PASS: Grade boundary 59 -> 1
+PASS: Grade boundary 60 -> 2
+PASS: Grade boundary 69 -> 2
+PASS: Grade boundary 70 -> 3
+PASS: Grade boundary 79 -> 3
+PASS: Grade boundary 80 -> 4
+PASS: Grade boundary 89 -> 4
+PASS: Grade boundary 90 -> 5
+PASS: Grade boundary 100 -> 5
+PASS: Fractional average is not rounded before grading
+PASS: Invalid subject count rejected: ''
+PASS: Invalid subject count rejected: ' \t '
+PASS: Invalid subject count rejected: 'abc'
+PASS: Invalid subject count rejected: '3.5'
+PASS: Invalid subject count rejected: '3junk'
+PASS: Invalid subject count rejected: '0'
+PASS: Invalid subject count rejected: '-1'
+PASS: Invalid subject count rejected: '1001'
+PASS: Invalid subject count rejected: '9999999999999999'
+PASS: Invalid subject count rejected: '3\x00junk'
+PASS: Invalid score rejected: ''
+PASS: Invalid score rejected: 'text'
+PASS: Invalid score rejected: '5.5'
+PASS: Invalid score rejected: '-1'
+PASS: Invalid score rejected: '101'
+PASS: Invalid score rejected: '9999999999999999'
+PASS: Invalid score rejected: '85\x00junk'
+PASS: Invalid subject name rejected: ''
+PASS: Invalid subject name rejected: '   '
+PASS: Invalid subject name rejected: 'XXXXXXXXXXXXXXXX'
+PASS: Invalid subject name rejected: 'Bad\x00Name'
+PASS: Invalid subject name rejected: 'Bad\tName'
+PASS: Whitespace around student name is trimmed
+PASS: 127-byte names accepted with CRLF
+PASS: Last score accepted without final newline
+PASS: 1000 subjects at maximum score
+PASS: interrupted input at stage 0 exits without hanging
+PASS: interrupted input at stage 1 exits without hanging
+PASS: interrupted input at stage 2 exits without hanging
+PASS: interrupted input at stage 3 exits without hanging
+PASS: Existing report replaced
+PASS: report opening failure produces an error, no false success

@@ -1,0 +1,8 @@
+John Deere
+3
+C Programming
+85
+Python
+92
+Computer Architecture
+68
