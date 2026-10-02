@@ -26,41 +26,67 @@ static void trim_whitespace(char *text)
 bool input_read_name(FILE *input, FILE *output,
                      char name[STUDENT_NAME_CAPACITY])
 {
-    /* Extra space lets us accept the maximum name plus CRLF without splitting it. */
-    char line[STUDENT_NAME_CAPACITY + 2];
+    char prompt[STUDENT_NAME_CAPACITY];
+    snprintf(prompt, sizeof(prompt), "Please enter your name (maximum %d bytes): ",
+             STUDENT_NAME_CAPACITY - 1);
+    return input_read_text(input, output, prompt, name, STUDENT_NAME_CAPACITY);
+}
+
+bool input_read_text(FILE *input, FILE *output, const char *prompt,
+                     char *text, size_t capacity)
+{
+    if (capacity < 2) return false;
 
     for (;;) {
-        size_t length;
-        fprintf(output, "Please enter your name (maximum %d bytes): ",
-                STUDENT_NAME_CAPACITY - 1);
+        size_t length = 0;
+        int character;
+        bool too_long = false;
+        bool invalid_character = false;
+        fprintf(output, "%s", prompt);
         fflush(output);
-
-        if (fgets(line, sizeof(line), input) == NULL) return false;
-
-        length = strcspn(line, "\n");
-        if (line[length] == '\n') {
-            line[length] = '\0';
-        } else if (!feof(input)) {
-            /* Drain the rest so it cannot become the answer to the next prompt. */
-            discard_line(input);
+        /* Consume the entire line, even after overflow, keeping the next prompt clean. */
+        while ((character = fgetc(input)) != '\n' && character != EOF) {
+            if (character == '\r') continue;
+            if (character == '\0') invalid_character = true;
+            if (length < capacity - 1) text[length++] = (char)character;
+            else too_long = true;
         }
-        if (length > 0 && line[length - 1] == '\r') line[--length] = '\0';
-
-        if (length >= STUDENT_NAME_CAPACITY) {
-            fprintf(output, "Name is too long. Maximum length is %d bytes.\n",
-                    STUDENT_NAME_CAPACITY - 1);
+        if (ferror(input) || (character == EOF && length == 0 && !too_long)) return false;
+        text[length] = '\0';
+        if (too_long) {
+            fprintf(output, "Input is too long. Maximum length is %zu bytes.\n", capacity - 1);
             continue;
         }
-
-        trim_whitespace(line);
-        if (line[0] == '\0') {
-            fprintf(output, "Name cannot be empty. Please try again.\n");
+        if (invalid_character) {
+            fprintf(output, "Input contains an invalid character. Please try again.\n");
             continue;
         }
-
-        strcpy(name, line);
+        trim_whitespace(text);
+        if (text[0] == '\0') {
+            fprintf(output, "Input cannot be empty. Please try again.\n");
+            continue;
+        }
         return true;
     }
+}
+
+bool input_read_subjects(FILE *input, FILE *output, Student *student)
+{
+    char prompt[SUBJECT_NAME_CAPACITY + NUMBER_INPUT_CAPACITY];
+
+    for (size_t index = 0; index < student->subject_count; index++) {
+        Subject *subject = &student->subjects[index];
+        snprintf(prompt, sizeof(prompt), "\nEnter subject %zu name: ", index + 1);
+        if (!input_read_text(input, output, prompt, subject->name, sizeof(subject->name))) {
+            return false;
+        }
+        snprintf(prompt, sizeof(prompt), "Enter your score for %s (%d-%d): ",
+                 subject->name, MIN_SCORE, MAX_SCORE);
+        if (!input_read_integer(input, output, prompt, MIN_SCORE, MAX_SCORE, &subject->score)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool input_read_integer(FILE *input, FILE *output, const char *prompt,

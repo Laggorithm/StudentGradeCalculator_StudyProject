@@ -9,6 +9,8 @@
 #define MIN_SUBJECT_COUNT 1
 #define MAX_SUBJECT_COUNT 1000
 #define GRADE_NOT_ENTERED (-1)
+#define MIN_SCORE 0
+#define MAX_SCORE 100
 
 typedef struct {
     char name[SUBJECT_NAME_CAPACITY];

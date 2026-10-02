@@ -29,8 +29,18 @@ int app_run(FILE *input, FILE *output)
         return EXIT_FAILURE;
     }
 
-    fprintf(output, "Student: %s\nSubjects: %zu\n",
+    if (!input_read_subjects(input, output, &student)) {
+        fprintf(output, "Input ended before all subjects were entered.\n");
+        student_destroy(&student);
+        return EXIT_FAILURE;
+    }
+
+    fprintf(output, "\nStudent: %s\nSubjects: %zu\n",
             student.name, student.subject_count);
+    for (size_t index = 0; index < student.subject_count; index++) {
+        fprintf(output, "%s: %d%%\n", student.subjects[index].name,
+                student.subjects[index].score);
+    }
     student_destroy(&student);
     return EXIT_SUCCESS;
 }
