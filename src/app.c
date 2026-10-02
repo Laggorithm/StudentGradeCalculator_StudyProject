@@ -50,6 +50,11 @@ int app_run(FILE *input, FILE *output)
         student_destroy(&student);
         return EXIT_FAILURE;
     }
+    if (!report_save(REPORT_FILENAME, &student, &summary)) {
+        student_destroy(&student);
+        return EXIT_FAILURE;
+    }
+    fprintf(output, "Report saved to %s\n", REPORT_FILENAME);
     student_destroy(&student);
     return EXIT_SUCCESS;
 }

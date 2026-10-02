@@ -68,3 +68,21 @@ bool report_print(FILE *output, const Student *student, const GradeSummary *summ
     /* Flush so failures are detected even when the stream is buffered. */
     return fflush(output) == 0 && !ferror(output);
 }
+
+bool report_save(const char *filename, const Student *student, const GradeSummary *summary)
+{
+    FILE *file = fopen(filename, "w");
+    bool success;
+
+    if (file == NULL) {
+        fprintf(stderr, "Could not open report file '%s' for writing.\n", filename);
+        return false;
+    }
+    success = report_print(file, student, summary);
+    /* Always close the file, including after a failed write. */
+    if (fclose(file) == EOF) success = false;
+    if (!success) {
+        fprintf(stderr, "Could not finish writing report file '%s'.\n", filename);
+    }
+    return success;
+}
