@@ -5,28 +5,62 @@
             "label": "CMake: configure",
             "type": "process",
             "command": "C:/msys64/ucrt64/bin/cmake.exe",
-            "args": ["-S", "${workspaceFolder}", "-B", "${workspaceFolder}/build", "-G", "MinGW Makefiles", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_C_COMPILER=C:/msys64/ucrt64/bin/gcc.exe"],
-            "options": {"env": {"PATH": "C:/msys64/ucrt64/bin;${env:PATH}"}},
+            "args": [
+                "-S",
+                "${workspaceFolder}",
+                "-B",
+                "${workspaceFolder}/build",
+                "-G",
+                "MinGW Makefiles",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_C_COMPILER=C:/msys64/ucrt64/bin/gcc.exe"
+            ],
+            "options": {
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;${env:PATH}"
+                }
+            },
             "problemMatcher": []
         },
         {
             "label": "CMake: build",
             "type": "process",
             "command": "C:/msys64/ucrt64/bin/cmake.exe",
-            "args": ["--build", "${workspaceFolder}/build"],
+            "args": [
+                "--build",
+                "${workspaceFolder}/build"
+            ],
             "dependsOn": "CMake: configure",
-            "options": {"env": {"PATH": "C:/msys64/ucrt64/bin;${env:PATH}"}},
-            "problemMatcher": ["$gcc"],
-            "group": {"kind": "build", "isDefault": true}
+            "options": {
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;${env:PATH}"
+                }
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Run program",
             "type": "process",
             "command": "${workspaceFolder}/build/StudentGradeCalculator.exe",
             "dependsOn": "CMake: build",
-            "options": {"cwd": "${workspaceFolder}", "env": {"PATH": "C:/msys64/ucrt64/bin;${env:PATH}"}},
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;${env:PATH}"
+                }
+            },
             "problemMatcher": [],
-            "presentation": {"reveal": "always", "focus": true, "panel": "dedicated"}
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            }
         }
     ]
 }
