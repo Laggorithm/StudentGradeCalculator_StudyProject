@@ -1,0 +1,5 @@
+/build/
+*.exe
+*.o
+/student_report.txt
+*.zip
