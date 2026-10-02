@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_library(grade_core src/app.c src/input.c src/student.c src/grading.c)
+add_library(grade_core src/app.c src/input.c src/student.c src/grading.c src/report.c)
 target_include_directories(grade_core PUBLIC src)
 
 add_executable(StudentGradeCalculator src/main.c)

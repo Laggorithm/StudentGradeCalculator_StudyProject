@@ -1,6 +1,7 @@
 #include "app.h"
 #include "input.h"
 #include "grading.h"
+#include "report.h"
 #include <stdlib.h>
 
 int app_run(FILE *input, FILE *output)
@@ -43,14 +44,12 @@ int app_run(FILE *input, FILE *output)
         return EXIT_FAILURE;
     }
 
-    fprintf(output, "\nStudent: %s\nSubjects: %zu\n",
-            student.name, student.subject_count);
-    for (size_t index = 0; index < student.subject_count; index++) {
-        fprintf(output, "%s: %d%%, grade %d\n", student.subjects[index].name,
-                student.subjects[index].score, student.subjects[index].grade);
+    fputc('\n', output);
+    if (!report_print(output, &student, &summary)) {
+        fprintf(stderr, "Could not print the student report.\n");
+        student_destroy(&student);
+        return EXIT_FAILURE;
     }
-    fprintf(output, "\nAverage Grade: %.2f\nAverage Score: %.2f%%\nOverall Grade: %d\n",
-            summary.average_grade, summary.average_score, summary.overall_grade);
     student_destroy(&student);
     return EXIT_SUCCESS;
 }
