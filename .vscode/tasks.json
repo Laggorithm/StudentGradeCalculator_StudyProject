@@ -27,15 +27,6 @@
             "options": {"cwd": "${workspaceFolder}", "env": {"PATH": "C:/msys64/ucrt64/bin;${env:PATH}"}},
             "problemMatcher": [],
             "presentation": {"reveal": "always", "focus": true, "panel": "dedicated"}
-        },
-        {
-            "label": "Test stage 1",
-            "type": "process",
-            "command": "${workspaceFolder}/build/Stage1Tester.exe",
-            "dependsOn": "CMake: build",
-            "options": {"cwd": "${workspaceFolder}", "env": {"PATH": "C:/msys64/ucrt64/bin;${env:PATH}"}},
-            "problemMatcher": [],
-            "presentation": {"reveal": "always", "panel": "dedicated"}
         }
     ]
 }
