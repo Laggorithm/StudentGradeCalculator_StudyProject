@@ -1,5 +1,6 @@
 #include "app.h"
 #include "input.h"
+#include "grading.h"
 #include <stdlib.h>
 
 int app_run(FILE *input, FILE *output)
@@ -8,6 +9,7 @@ int app_run(FILE *input, FILE *output)
     char prompt[STUDENT_NAME_CAPACITY];
     int subject_count;
     Student student = {0};
+    GradeSummary summary;
 
     fprintf(output, "Welcome to the Student Grade Calculator!\n");
     if (!input_read_name(input, output, name)) {
@@ -35,12 +37,20 @@ int app_run(FILE *input, FILE *output)
         return EXIT_FAILURE;
     }
 
+    if (!grading_calculate(&student, &summary)) {
+        fprintf(output, "Could not calculate grades: subject data is incomplete or invalid.\n");
+        student_destroy(&student);
+        return EXIT_FAILURE;
+    }
+
     fprintf(output, "\nStudent: %s\nSubjects: %zu\n",
             student.name, student.subject_count);
     for (size_t index = 0; index < student.subject_count; index++) {
-        fprintf(output, "%s: %d%%\n", student.subjects[index].name,
-                student.subjects[index].score);
+        fprintf(output, "%s: %d%%, grade %d\n", student.subjects[index].name,
+                student.subjects[index].score, student.subjects[index].grade);
     }
+    fprintf(output, "\nAverage Grade: %.2f\nAverage Score: %.2f%%\nOverall Grade: %d\n",
+            summary.average_grade, summary.average_score, summary.overall_grade);
     student_destroy(&student);
     return EXIT_SUCCESS;
 }
