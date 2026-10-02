@@ -1,4 +1,7 @@
+#include <stdio.h>
+#include "app.h"
+
 int main(void)
 {
-    return 0;
+    return app_run(stdin, stdout);
 }
